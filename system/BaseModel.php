@@ -161,14 +161,14 @@ abstract class BaseModel
      *
      * @var string
      */
-    protected $createdField = 'created_at';
+    protected $createdField = 'registrationDate';
 
     /**
      * The column used for update timestamps
      *
      * @var string
      */
-    protected $updatedField = 'updated_at';
+    protected $updatedField = '';
 
     /**
      * If this model should use "softDeletes" and
@@ -192,7 +192,7 @@ abstract class BaseModel
      *
      * @var string
      */
-    protected $deletedField = 'deleted_at';
+    protected $deletedField = '';
 
     /**
      * Whether to allow inserting empty data.
