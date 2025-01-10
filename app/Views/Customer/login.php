@@ -19,6 +19,14 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+        .alert {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
         input, button {
             width: 90%;
             padding: 10px;
@@ -50,6 +58,13 @@
 </head>
 <body>
     <div class="container">
+        <!-- Notification Section -->
+        <?php if (session()->getFlashdata('success_message')): ?>
+            <div class="alert">
+                <?= session()->getFlashdata('success_message') ?>
+            </div>
+        <?php endif; ?>
+
         <h2>Welcome Back!</h2>
         <p>Please login to access your account</p>
         <form method="POST" action="/customer/login">

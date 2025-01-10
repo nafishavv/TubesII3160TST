@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1736478577;_ci_previous_url|s:49:"http://localhost:8080/index.php/admin/manageRooms";errors|a:3:{s:10:"roomTypeID";s:33:"The roomTypeID field is required.";s:11:"floorNumber";s:34:"The floorNumber field is required.";s:12:"availability";s:35:"The availability field is required.";}__ci_vars|a:1:{s:6:"errors";s:3:"old";}

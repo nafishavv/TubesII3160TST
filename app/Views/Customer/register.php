@@ -59,7 +59,8 @@
             <button type="submit">Register</button>
         </form>
         <div class="footer">
-            Already have an account? <a href="<?= base_url('/customer/login') ?>">Login here</a>
+            Already have an account? <a href="<?= base_url('/customer/login') ?>">Login here</a><br>
+            <a href="/admin/register" class="button">Go to Admin Register</a>
         </div>
     </div>
 </body>

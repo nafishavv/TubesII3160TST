@@ -5,55 +5,84 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-// $routes->get('/', 'Home::index');
-
 $routes->get('/', 'CustomerController::showRegisterView');
-// $routes->get('/customer/register', 'CustomerController::showRegisterView');
-// $routes->get('/customer/login', 'CustomerController::showLoginView');
-$routes->get('/customer/home', 'CustomerController::home', ['filter' => 'customer']);
 
+// Customer routes
 $routes->group('customer', function($routes) {
     $routes->get('register', 'CustomerController::showRegisterView');
     $routes->get('login', 'CustomerController::showLoginView');
     $routes->post('register', 'CustomerController::register');
     $routes->post('login', 'CustomerController::login');
 
-    // Protect routes for logged-in users only
     $routes->group('', ['filter' => 'customer'], function($routes) {
+        $routes->get('home', 'CustomerController::home');
+        $routes->get('updateProfile', 'CustomerController::updateProfileView');
         $routes->post('updateProfile', 'CustomerController::updateProfile');
-        $routes->get('showProfile/(:num)', 'CustomerController::showProfile/$1');
-        $routes->delete('deleteAccount/(:num)', 'CustomerController::deleteAccount/$1');
-        $routes->get('getTotalPoints/(:num)', 'CustomerController::getTotalPoints/$1');
-        $routes->post('addPoints', 'CustomerController::addPoints');
-        $routes->post('redeemPoints', 'CustomerController::redeemPoints');
-        $routes->post('logout', 'CustomerController::logout');
+        $routes->get('showProfile', 'CustomerController::showProfile');
+        $routes->get('deleteAccount', 'CustomerController::deleteAccount');
+        $routes->get('logout', 'CustomerController::logout');
+        $routes->get('reservationPage', 'ReservationController::reservationPage');
+        $routes->get('checkout', 'ReservationController::checkoutPage');
+        $routes->get('makeReservation', 'ReservationController::makeReservation');
+        $routes->post('makeReservation', 'ReservationController::makeReservation');
+        $routes->post('confirmCheckout', 'ReservationController::confirmCheckout');
+        $routes->get('feedbackPage', 'FeedbackController::feedbackPage');
+        $routes->get('feedbackForm', 'FeedbackController::feedbackForm');
+        $routes->post('submitFeedback', 'FeedbackController::submitFeedback');
+    
+
+
+
     });
 });
 
-
-// $routes->post('user/register', 'UserController::register');
-// $routes->post('user/login', 'UserController::login');
-// $routes->post('user/logout', 'UserController::logout');
-// $routes->put('user/updateProfile', 'UserController::updateProfile');
-// $routes->get('user/show', 'UserController::show');
-// $routes->delete('user/deleteAccount', 'UserController::deleteAccount');
-
-// // tambahan buat admin, tapi belum di set
-// // $routes->get('user', 'UserController::index');
+// Admin routes
+$routes->group('admin', function($routes) {
+    $routes->get('register', 'AdminController::showRegisterView');
+    $routes->get('login', 'AdminController::showLoginView');
+    $routes->post('register', 'AdminController::register');
+    $routes->post('login', 'AdminController::login');
+    $routes->get('home', 'AdminController::showHomeView');
+    $routes->get('/', 'AdminController::showRegisterView');
 
 
-// // Routes for Room Management
-// $routes->get('room', 'RoomController::getAllRooms');
-// $routes->get('room/available', 'RoomController::getAvailableRooms');
-// $routes->post('room/addRoom', 'RoomController::addRoom');
-// $routes->put('room/availability/(:num)', 'RoomController::updateAvailability/$1');
-// $routes->put('room/price/(:num)', 'RoomController::updatePrice/$1');
-// $routes->get('room/(:num)', 'RoomController::getRoomInfo/$1');
+    $routes->group('', ['filter' => 'admin'], function($routes) {
+        $routes->post('updateProfile', 'AdminController::updateProfile');
+        $routes->get('data', 'AdminController::showProfile');
+        $routes->get('logout', 'AdminController::logout');
+        $routes->get('customers', 'AdminController::getAllCustomer');
+        $routes->get('customer_details', 'AdminController::getAllCustomer');
+        $routes->get('customer/(:num)', 'AdminController::getCustomerByID/$1');
+        $routes->get('manageRooms', 'AdminController::manageRooms');
+        $routes->post('addRoom', 'AdminController::addRoom');
+        $routes->get('addRoom', 'AdminController::addRoom');
+        $routes->post('updateRoom/(:num)', 'AdminController::updateRoom/$1');
+        $routes->post('deleteRoom/(:num)', 'AdminController::deleteRoom/$1');
+        $routes->get('editRoom/(:num)', 'AdminController::editRoom/$1');
+        $routes->get('addRoomPage', 'AdminController::addRoomPage');
+        $routes->post('addRoomPage', 'AdminController::addRoomPage');
+        $routes->get('viewReservations', 'ReservationController::viewReservations');
+        $routes->get('manageAvailability/(:num)', 'ReservationController::manageAvailability/$1');
+        $routes->post('manageAvailability/(:num)', 'ReservationController::manageAvailability/$1');
+        $routes->get('updateAvailability/(:num)', 'ReservationController::manageAvailability/$1');
+        $routes->post('updateAvailability/(:num)', 'ReservationController::manageAvailability/$1');
+        $routes->get('viewCustomer/(:num)', 'ReservationController::viewCustomer/$1');
+        $routes->get('viewFeedback', 'FeedbackController::viewFeedback');
 
 
-// $routes->group('room', ['filter' => 'admin'], function($routes) {
-//     $routes->get('/', 'RoomController::index'); // List all rooms
-//     $routes->post('add', 'RoomController::addRoom'); // Add new room
-//     $routes->post('availability/(:num)', 'RoomController::updateAvailability/$1'); // Update availability
-//     $routes->post('price/(:num)', 'RoomController::updatePrice/$1'); // Update price
-// });
+
+
+
+
+    });
+});
+
+// RoomType routes
+$routes->group('roomType', ['filter' => 'admin'], function($routes) {
+    $routes->get('/', 'RoomTypeController::index');
+    $routes->get('add', 'RoomTypeController::addView');
+    $routes->post('add', 'RoomTypeController::add');
+    $routes->get('edit/(:num)', 'RoomTypeController::editView/$1');
+    $routes->post('update/(:num)', 'RoomTypeController::update/$1');
+    $routes->get('delete/(:num)', 'RoomTypeController::delete/$1');
+    });

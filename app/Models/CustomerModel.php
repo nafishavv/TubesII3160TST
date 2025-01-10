@@ -82,4 +82,16 @@ class CustomerModel extends Model
     {
         return $this->delete($customerID);
     }
+
+    public function searchCustomers($keyword)
+    {
+        if ($keyword) {
+            return $this->like('name', $keyword)  // Mencocokkan keyword pada kolom 'name'
+                        ->orLike('email', $keyword)  // Mencocokkan keyword pada kolom 'email'
+                        ->orLike('customerID', $keyword)  // Mencocokkan keyword pada kolom 'customerID'
+                        ->findAll();  // Mengambil data yang sesuai
+        }
+
+        return $this->findAll();  // Jika tidak ada keyword, ambil semua data
+    }
 }

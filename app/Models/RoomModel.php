@@ -6,95 +6,54 @@ use CodeIgniter\Model;
 
 class RoomModel extends Model
 {
-    protected $table = 'room';
-    protected $primaryKey = 'roomID';
-    protected $allowedFields = ['type', 'price', 'availability', 'bedCount', 'roomDescription'];
+    protected $table = 'room'; // Nama tabel di database
+    protected $primaryKey = 'roomID'; // Primary key tabel
+    protected $allowedFields = [
+        'roomID', 
+        'roomTypeID', 
+        'floorNumber', 
+        'availability'
+    ]; // Kolom-kolom yang boleh dimodifikasi
 
-    protected $validationRules = [
-        'type' => 'required|string|max_length[50]',
-        'price' => 'required|integer|greater_than[0]',
-        'bedCount' => 'required|integer|greater_than[0]',
-    ];
-    
-    protected $validationMessages = [
-        'type' => [
-            'required' => 'Room type is required.',
-            'string' => 'Room type must be a string.',
-        ],
-        'price' => [
-            'required' => 'Price is required.',
-            'integer' => 'Price must be an integer.',
-            'greater_than' => 'Price must be greater than zero.',
-        ],
-        'bedCount' => [
-            'required' => 'Bed count is required.',
-            'integer' => 'Bed count must be an integer.',
-            'greater_than' => 'Bed count must be greater than zero.',
-        ],
-    ];
-    
-    // Get all rooms
+    // Mengambil semua data room
     public function getAllRooms()
     {
         return $this->findAll();
     }
 
-    // Get available rooms
+    // Mengambil room berdasarkan tipe
+    public function getRoomByType($roomTypeID)
+    {
+        return $this->where('roomTypeID', $roomTypeID)->findAll();
+    }
+
+    // Mengambil room yang tersedia
     public function getAvailableRooms()
     {
         return $this->where('availability', true)->findAll();
     }
 
-    public function addRoom()
+    // Mengupdate informasi room
+    public function updateRoom($roomID, $data)
     {
-        // Periksa autentikasi dan peran admin
-        if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
-            return $this->response->setJSON([
-                'status' => 'fail',
-                'message' => 'Unauthorized access.'
-            ])->setStatusCode(403);
-        }
-    
-        $data = $this->request->getPost();
-    
-        // Tambahkan nilai default untuk availability dan roomDescription
-        $data['availability'] = true; // default set to true
-        if (empty($data['roomDescription'])) {
-            $data['roomDescription'] = "No description provided.";
-        }
-    
-        $roomModel = new RoomModel();
-    
-        if ($roomModel->save($data)) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Room added successfully.'
-            ]);
-        }
-    
-        // Menampilkan error jika validasi gagal
-        return $this->response->setJSON([
-            'status' => 'fail',
-            'message' => 'Failed to add room.',
-            'errors' => $roomModel->errors()
-        ])->setStatusCode(400);
-    }
-    
-    // Update room availability
-    public function updateAvailability($roomID, $availability)
-    {
-        return $this->update($roomID, ['availability' => $availability]);
+        return $this->update($roomID, $data);
     }
 
-    // Update room price
-    public function updatePrice($roomID, $price)
+    // Menghapus room
+    public function deleteRoom($roomID)
     {
-        return $this->update($roomID, ['price' => $price]);
+        return $this->delete($roomID);
     }
 
-    // Get room info
-    public function getRoomInfo($roomID)
+    // Menambahkan room baru
+    public function addRoom($roomTypeID, $floorNumber, $availability)
     {
-        return $this->find($roomID);
+        return $this->insert([
+            'roomTypeID' => $roomTypeID,
+            'floorNumber' => $floorNumber,
+            'availability' => $availability,
+        ]);
     }
+
+
 }

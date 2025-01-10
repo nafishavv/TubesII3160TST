@@ -6,21 +6,19 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 
-class CustomerAuthFilter implements FilterInterface
+class AdminAuthFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
 
-        // Check if customer session is active
-        if (!$session->has('customerID')) {
-            return redirect()->to('/customer/login')->with('error', 'You must be logged in as a customer to access this page.');
-        }
+        // if (!$session->has('adminID')) {
+        //     return redirect()->to('/admin/login')->with('error', 'You must be logged in as an admin to access this page.');
+        // }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        // No post-processing needed for customer authentication
+        // No post-processing needed for admin authentication
     }
 }
-    

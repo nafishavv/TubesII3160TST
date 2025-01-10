@@ -47,7 +47,7 @@ class Session implements SessionInterface
      *
      * @deprecated Use $this->config->driver.
      */
-    protected $sessionDriverName;
+    protected $sessionDriverName = 'CodeIgniter\Session\Handlers\FileHandler';
 
     /**
      * The session cookie name, must contain only [0-9a-z_-] characters.
@@ -84,7 +84,7 @@ class Session implements SessionInterface
      *
      * @deprecated Use $this->config->savePath.
      */
-    protected $sessionSavePath;
+    protected $sessionSavePath = WRITEPATH . 'session';
 
     /**
      * Whether to match the user's IP address when reading the session data.
